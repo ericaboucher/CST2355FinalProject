@@ -5,4 +5,20 @@
     <string name="email_hint">someone@email.com</string>
     <string name="enter_password">Enter your password:</string>
     <string name="login">Login</string>
+    <string name="home">Home</string>
+    <string name="search_database">Search Database</string>
+    <string name="favourites">Favourites</string>
+    <string name="logout">Logout</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="home_message">Please select an option from the toolbar at the top of the page, or click on the following button to search an image</string>
+    <string name="open">OPEN</string>
+    <string name="close">CLOSE</string>
+    <string name="enter_long">Enter longitude:</string>
+    <string name="welcome_search">Welcome to NASA\'s image search. Please enter a longitude and latitude in the boxes below, and we will load your image.</string>
+    <string name="enter_lat">Enter latitude:</string>
+    <string name="search">Search</string>
+    <string name="longitude">Longitude:</string>
+    <string name="latitude">Latitude:</string>
+    <string name="enter_date">Enter date:</string>
+    <string name="date">Date:</string>
 </resources>

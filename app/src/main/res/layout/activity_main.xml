@@ -6,15 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
     >
 
     <TextView
-        android:id="@+id/text1"
+        android:id="@+id/main_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/welcome"
-        android:textSize="35dp"
+        android:textSize="30dp"
         android:textAlignment="center"
         />
 
