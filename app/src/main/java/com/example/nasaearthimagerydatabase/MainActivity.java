@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
         //load button from login page
         Button btn = findViewById(R.id.login_button);
         //load home page when user clicks button
-        btn.setOnClickListener( (click) ->
-                startActivity(new Intent(MainActivity.this, HomeActivity.class))
+        btn.setOnClickListener( (click) -> {
+                    startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                }
                 );
     }
 

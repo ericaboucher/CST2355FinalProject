@@ -2,24 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:theme="?attr/actionBarTheme"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"/>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/nav_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:openDrawer="start">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_intro"
         android:text="Search for an Image"
-        android:textSize="35dp"
+        android:textSize="20dp"
         android:textAlignment="center"
         />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/search_text"
-        android:text="@string/welcome_search"
-        android:textSize="18dp"/>
-
 
     <TextView
         android:layout_width="match_parent"
@@ -32,7 +45,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit_long"
-        android:inputType="numberSigned"
         />
 
     <TextView
@@ -45,7 +57,6 @@
         android:id="@+id/edit_lat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberSigned"
         />
 
     <TextView
@@ -67,3 +78,35 @@
         android:layout_height="wrap_content"
         android:text="@string/search"
         />
+
+            <ProgressBar style="?android:attr/progressBarStyleHorizontal"
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                />
+
+
+            <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/fav_button"
+                android:text="Add to Favourites"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+    app:menu="@menu/drawer_menu"
+    android:id="@+id/nav_view"/>
+        </androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>
