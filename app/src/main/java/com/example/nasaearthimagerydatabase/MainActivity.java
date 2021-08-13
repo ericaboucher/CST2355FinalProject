@@ -1,21 +1,23 @@
 package com.example.nasaearthimagerydatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.nasaearthimagerydatabase.HomeActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
-@author Erica Boucher 040699523
- Main page loaded by application
+ * @author Erica Boucher 040699523
+ * Main page loaded by application
  */
 public class MainActivity extends AppCompatActivity {
-
     //create shared preference variable for saving user's email
     SharedPreferences prefs = null;
     //variable to save email/edittext box object
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, HomeActivity.class));
                 }
                 );
+
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "Welcome To NASA Image Search. Please login.", Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     /**

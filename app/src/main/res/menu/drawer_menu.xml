@@ -2,5 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="Search Database" android:id="@+id/search_item"/>
     <item android:title="Favourites" android:id="@+id/favourite_item"/>
+    <item android:title="Help" android:id="@+id/help_item"/>
     <item android:title="Logout" android:id="@+id/logout_item"/>
 </menu>

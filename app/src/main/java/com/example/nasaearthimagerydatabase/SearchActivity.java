@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -42,6 +43,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity to have user search longitude, latitude, and date. Search results show NASA image to user
+ */
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     SharedPreferences prefs = null;
     private EditText lon;
@@ -53,21 +57,19 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     private static XmlPullParser xpp;
     private static final Map<Integer, Integer> optionsItemMap = new HashMap<>();
 
-
-
+    /**
+     * loads view, buttons, toolbar for activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
 
+        //find edit text boxes and save them
         longitude = findViewById(R.id.edit_long);
         latitude = findViewById(R.id.edit_lat);
         date = findViewById(R.id.edit_date);
-
-        Button fav = findViewById(R.id.fav_button);
-        fav.setOnClickListener( (click) ->
-                startActivity(new Intent(this, FavouriteActivity.class))
-        );
 
         //fill previously declared variables
         prefs = getSharedPreferences("Filename", MODE_PRIVATE);
@@ -110,57 +112,77 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 drawer, tBar, R.string.open, R.string.close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //new image search
         ImageSearch search = new ImageSearch();
 
+        //load image search when user clicks button
         Button btn = findViewById(R.id.search_button);
         btn.setOnClickListener( (click) ->
                 search.execute());
+
+        //if user clicks on favourite button, load new activity
+        Button fav = findViewById(R.id.fav_button);
+        fav.setOnClickListener( (click) -> {
+
+            startActivity(new Intent(this, FavouriteActivity.class));
+                }
+
+        );
     }
 
+    /**
+     * Class to search for the image
+     */
     private class ImageSearch extends AsyncTask<String, Integer, String> {
         String icon = null;
         Bitmap NASAImage;
 
+        /**
+         * Shows progress made by activity to user
+         * @param s
+         */
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            // Setup everything on the activity
-
-            /*
-            EditText editLon = findViewById(R.id.edit_long);
-            String lo = editLon.getText().toString();
-            ((TextView) findViewById(R.id.longitude)).setText(lo);
-            EditText editLat = findViewById(R.id.edit_lat);
-            String la = editLat.getText().toString();
-            ((TextView) findViewById(R.id.latitude)).setText(la);
+            // Show image to the user
             ((ImageView) findViewById(R.id.image_view)).setImageBitmap(NASAImage);
-            */
+
             // Hide the progress bar
             ((ProgressBar) findViewById(R.id.progress_bar)).setVisibility(View.INVISIBLE);
         }
 
+        /**
+         * after showing the progress, update
+         * @param values
+         */
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
             ((ProgressBar) findViewById(R.id.progress_bar)).setProgress(values[0]);
         }
 
+        /**
+         * work that activity will do in the background to find the image for the user
+         * @param strings
+         * @return
+         */
         @Override
         protected String doInBackground(String... strings) {
 
             try {
+                //search string to find image
                 String SEARCH_URL = "https://api.nasa.gov/planetary/earth/imagery?lon=" +
                         longitude.getText().toString() + "&lat=" + latitude.getText().toString() + "&date="
                         + date.getText().toString() + "&api_key=DEMO_KEY";
 
+                //create url and update progress
                 URL url = new URL(SEARCH_URL);
                 publishProgress(25);
 
-                //open the connection
+                //open the connection and update progress
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
                 publishProgress(50);
@@ -168,13 +190,14 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                 //wait for data:
                 InputStream response = urlConnection.getInputStream();
 
+                //if there is a response, save the image in variable
                 int responseCode = urlConnection.getResponseCode();
                 publishProgress(75);
                 if (responseCode == 200) {
                     NASAImage = BitmapFactory.decodeStream(urlConnection.getInputStream());
                 }
 
-
+                //if the file already exists, load it
                 if (fileExists("NASAImage.png")) {
                     FileInputStream fis = null;
                     try {
@@ -184,34 +207,13 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
                     }
                     NASAImage = BitmapFactory.decodeStream(fis);
                 } else {
+                    //open the file
                     FileOutputStream outputStream = openFileOutput("NASAImage.png", Context.MODE_PRIVATE);
                     NASAImage.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
                     outputStream.flush();
                     outputStream.close();
                 }
                 publishProgress(100);
-
-            /*
-
-                InputStream in = new BufferedInputStream(url.openStream());
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                byte[] buf = new byte[1024];
-                int n = 0;
-                while (-1 != (n = in.read(buf))) {
-                    out.write(buf, 0, n);
-                }
-                out.close();
-                in.close();
-                byte[] response = out.toByteArray();
-
-                NASAImage = BitmapFactory.decodeStream(in);
-                FileOutputStream fos = new FileOutputStream("C://NASAImage.jpg");
-                fos.write(response);
-                fos.close();
-
-
-             */
-
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -222,53 +224,19 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             return null;
         }
 
-            /*InputStream is = null;
-            try {
-                // First retrieve the image
-                is = new URL(SEARCH_URL).openConnection().getInputStream();
-                xpp.setInput(is, null);
-
-                int eventType = xpp.getEventType(); //The parser is currently at START_DOCUMENT
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-                    if (eventType == XmlPullParser.START_TAG) {
-                            publishProgress(25);
-                            icon = xpp.getAttributeValue(null, "icon");
-                            publishProgress(75);
-                    }
-                    eventType = xpp.next();
-                }
-
-                // Download the image if we don't already have it.
-                Log.i(this.getClass().getName(), "Looking for " + icon);
-                if (!fileExists(icon)) {
-                    Log.i(this.getClass().getName(), "Downloading " + icon);
-                    NASAImage = BitmapFactory.decodeStream(is);
-
-                    // Save it, using a try-with-resources will automatically close and flush
-                    try (FileOutputStream fos = openFileOutput(icon, Context.MODE_PRIVATE)) {
-                        NASAImage.compress(Bitmap.CompressFormat.PNG, 80, fos);
-                    }
-                } else {
-                    Log.i(this.getClass().getName(), icon + " already exists");
-
-                    // Load it from disk
-                    try (FileInputStream fis = openFileInput(icon)) {
-                        NASAImage = BitmapFactory.decodeStream(fis);
-                    }
-                }
-                publishProgress(100);
-            } catch (Exception e) {
-                Log.e(this.getClass().getName(), e.getMessage());
-            }
-            return null;
-        }*/
-
+        /**
+         * checks if file exists
+         * @param fname
+         * @return
+         */
         public boolean fileExists(String fname) {
             return getBaseContext().getFileStreamPath(fname).exists();
         }
     }
 
-
+    /**
+     * save shared preferences when pausing app
+     */
     @Override
     protected void onPause(){
         super.onPause();
@@ -282,7 +250,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         editor.apply();
     }
 
-
+    /**
+     * item menu for navigation drawer, when clicked go to activity
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -295,6 +267,14 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
             case R.id.favourite_item:
                 startActivity(new Intent(this, FavouriteActivity.class));
                 break;
+            case R.id.help_item:
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setTitle("Search")
+                        .setMessage("Welcome to the search page! Please enter the longitude, latitude, and date for the image you would like to search")
+                        .setPositiveButton("OK",(click, arg) -> { })
+                        .create()
+                        .show();
+                break;
             case R.id.logout_item:
                 finish();
                 break;
@@ -302,7 +282,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         return false;
     }
 
-
+    /**
+     * loads toolbar menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -310,6 +294,11 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
+    /**
+     * loads menu items and toast message
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         String msg;
