@@ -154,8 +154,8 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
 
             try {
                 String SEARCH_URL = "https://api.nasa.gov/planetary/earth/imagery?lon=" +
-                        longitude + "&lat=" + latitude + "&date="
-                        + date + "&api_key=DEMO_KEY";
+                        longitude.getText().toString() + "&lat=" + latitude.getText().toString() + "&date="
+                        + date.getText().toString() + "&api_key=DEMO_KEY";
 
                 URL url = new URL(SEARCH_URL);
                 publishProgress(25);
