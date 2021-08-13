@@ -12,8 +12,8 @@
     <string name="logout">Déconnexion</string>
     <string name="welcome_back">Content de te Revoir!</string>
     <string name="home_message">Please select an option from the toolbar at the top of the page, or click on the following button to search an image</string>
-    <string name="open">OPEN</string>
-    <string name="close">CLOSE</string>
+    <string name="open">OUVERT</string>
+    <string name="close">FERME</string>
     <string name="enter_long">Saisissez la longitude:</string>
     <string name="welcome_search">Bienvenue dans la recherche d\'images de la NASA. Veuillez entrer une longitude et une latitude dans les cases ci-dessous, et nous chargerons votre image.</string>
     <string name="enter_lat">Saisissez la latitude:</string>
@@ -26,4 +26,5 @@
     <string name="list_delete_message">La ligne sélectionnée est: %1$d\nL\'identifiant de la base de données est: %2$d</string>
     <string name="list_delete_positive">Oui</string>
     <string name="list_delete_negative">Non</string>
+    <string name="fun_fact">Fait Amusant!</string>
 </resources>

@@ -250,14 +250,21 @@ public class FavouriteActivity extends AppCompatActivity implements NavigationVi
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        String msg;
-        if (optionsItemMap.containsKey(item.getItemId())) {
-            msg = "You clicked on item " + optionsItemMap.get(item.getItemId());
-        } else {
-            msg = "You clicked on the overflow menu";
+        switch (item.getItemId()) {
+            case R.id.home_item:
+                startActivity(new Intent(this, HomeActivity.class));
+                break;
+            case R.id.search_item:
+                startActivity(new Intent(this, SearchActivity.class));
+                break;
+            case R.id.favourite_item:
+                startActivity(new Intent(this, FavouriteActivity.class));
+                break;
+            case R.id.logout_item:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
         }
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 }
 

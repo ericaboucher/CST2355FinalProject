@@ -2,9 +2,12 @@ package com.example.nasaearthimagerydatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -28,22 +31,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     /**
      * Loads page
+     *
      * @param savedInstanceState
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         //get and load toolbar
         Toolbar tBar = findViewById(R.id.toolbar);
         setSupportActionBar(tBar);
-
-        //use a hashmap to map buttons
-        optionsItemMap.put(R.id.home_item, 1);
-        optionsItemMap.put(R.id.search_item, 2);
-        optionsItemMap.put(R.id.favourite_item, 3);
-        optionsItemMap.put(R.id.logout_item, 4);
 
         //create navigation drawer
         DrawerLayout drawer = findViewById(R.id.nav_drawer);
@@ -55,17 +53,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         //load search button
-        Button btn = findViewById(R.id.search_database);
+        Button db = findViewById(R.id.search_database);
         //load search page when user clicks
-        btn.setOnClickListener( (click) -> {
+        db.setOnClickListener((click) -> {
                     startActivity(new Intent(this, SearchActivity.class));
                 }
         );
+
+        String msg = "It was a NASA scientist that invented the Super Soaker squirt gun.";
+        Button fun = findViewById(R.id.fun_fact);
+        fun.setOnClickListener( (click) ->
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show());
+
+
 
     }
 
     /**
      * Loads different activities based on button that user clicks
+     *
      * @param item
      * @return
      */
@@ -85,7 +91,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.setTitle("Home")
                         .setMessage("Welcome to your home page! Press Search to begin your image search")
-                        .setPositiveButton("OK",(click, arg) -> { })
+                        .setPositiveButton("OK", (click, arg) -> {
+                        })
                         .create()
                         .show();
                 break;
@@ -98,6 +105,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     /**
      * loads toolbar menu
+     *
      * @param menu
      * @return
      */
@@ -111,20 +119,27 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     /**
      * Toast message to tell user which item was clicked
+     *
      * @param item
      * @return
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        String msg;
-        //if item clicked has an id, tell the user what item it is
-        if (optionsItemMap.containsKey(item.getItemId())) {
-            msg = "You clicked on item " + optionsItemMap.get(item.getItemId());
-        } else {
-            msg = "You clicked on the overflow menu";
+        switch (item.getItemId()) {
+            case R.id.home_item:
+                startActivity(new Intent(this, HomeActivity.class));
+                break;
+            case R.id.search_item:
+                startActivity(new Intent(this, SearchActivity.class));
+                break;
+            case R.id.favourite_item:
+                startActivity(new Intent(this, FavouriteActivity.class));
+                break;
+            case R.id.logout_item:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
         }
-        //show toast message to user
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-        return super.onOptionsItemSelected(item);
+        return false;
     }
+
 }

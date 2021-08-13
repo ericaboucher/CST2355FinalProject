@@ -25,4 +25,5 @@
     <string name="list_delete_message">The selected row is: %1$d\nThe database id is: %2$d</string>
     <string name="list_delete_positive">Yes</string>
     <string name="list_delete_negative">No</string>
+    <string name="fun_fact">Fun Fact!</string>
 </resources>

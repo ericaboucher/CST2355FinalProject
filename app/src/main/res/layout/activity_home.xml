@@ -46,6 +46,13 @@
                 android:text="@string/search_database"
                 android:id="@+id/search_database"
             />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fun_fact"
+                android:id="@+id/fun_fact"/>
+
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"

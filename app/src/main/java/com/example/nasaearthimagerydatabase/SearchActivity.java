@@ -48,9 +48,6 @@ import java.util.Map;
  */
 public class SearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     SharedPreferences prefs = null;
-    private EditText lon;
-    private EditText lat;
-    private EditText date2;
     public static EditText longitude;
     public static EditText latitude;
     public static EditText date;
@@ -71,26 +68,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         latitude = findViewById(R.id.edit_lat);
         date = findViewById(R.id.edit_date);
 
-        //fill previously declared variables
-        prefs = getSharedPreferences("Filename", MODE_PRIVATE);
-        //set longitude
-        lon = findViewById(R.id.edit_long);
-        //String variable to save longitude
-        String savedString = prefs.getString("lon", "");
-        lon.setText(savedString);
-
-        //set latitude
-        lat = findViewById(R.id.edit_lat);
-        //String variable to save latitude
-        savedString = prefs.getString("lat", "");
-        lat.setText(savedString);
-
-        //set date
-        date2 = findViewById(R.id.edit_date);
-        //String variable to save date
-        savedString = prefs.getString("date", "");
-        date2.setText(savedString);
-
         // Start the progress bar
         ProgressBar pb = findViewById(R.id.progress_bar);
         pb.setVisibility(View.VISIBLE);
@@ -99,12 +76,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
         //get and load toolbar
         Toolbar tBar = findViewById(R.id.toolbar);
         setSupportActionBar(tBar);
-
-        //use a hashmap to map buttons
-        optionsItemMap.put(R.id.home_item, 1);
-        optionsItemMap.put(R.id.search_item, 2);
-        optionsItemMap.put(R.id.favourite_item, 3);
-        optionsItemMap.put(R.id.logout_item, 4);
 
         //create navigation drawer
         DrawerLayout drawer = findViewById(R.id.nav_drawer);
@@ -235,22 +206,6 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
     }
 
     /**
-     * save shared preferences when pausing app
-     */
-    @Override
-    protected void onPause(){
-        super.onPause();
-        //create a sharedPrefs editor
-        SharedPreferences.Editor editor = prefs.edit();
-        //put data back in the edit text
-        editor.putString("date", date.getText().toString());
-        editor.putString("lon", lon.getText().toString());
-        editor.putString("lat", lat.getText().toString());
-        //commit the changes
-        editor.apply();
-    }
-
-    /**
      * item menu for navigation drawer, when clicked go to activity
      * @param item
      * @return
@@ -301,13 +256,22 @@ public class SearchActivity extends AppCompatActivity implements NavigationView.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        String msg;
-        if (optionsItemMap.containsKey(item.getItemId())) {
-            msg = "You clicked on item " + optionsItemMap.get(item.getItemId());
-        } else {
-            msg = "You clicked on the overflow menu";
+
+        switch (item.getItemId()) {
+            case R.id.home_item:
+                startActivity(new Intent(this, HomeActivity.class));
+                break;
+            case R.id.search_item:
+                startActivity(new Intent(this, SearchActivity.class));
+                break;
+            case R.id.favourite_item:
+                startActivity(new Intent(this, FavouriteActivity.class));
+                break;
+            case R.id.logout_item:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
         }
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 }
+
